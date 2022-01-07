@@ -1,0 +1,32 @@
+			//Verilog Code for Ring Counter
+
+module Kamana_RingCounter_Verilog (RESET , CLK , R , J);
+
+input CLK, RESET;
+output[3:0] R;
+output[3:0] J;
+
+reg [7:0] temp;
+
+always @(posedge CLK , posedge RESET)
+
+begin
+if(RESET == 1'b1) begin
+
+temp[7:4] = 4'b0001;
+temp[3:0] = 4'b0000;
+
+end
+
+else if (CLK == 1'b1) begin
+
+temp[7:4] = {temp[6:4] , temp[7]};			//Ring Counter
+temp[3:0] = {temp[2:0] , ~temp[3]};			//Twisted Ring Counter
+
+end
+end
+
+assign R = temp[7:4];
+assign J = temp[3:0];
+
+endmodule
